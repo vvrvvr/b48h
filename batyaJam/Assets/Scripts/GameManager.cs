@@ -97,6 +97,9 @@ public class GameManager : MonoBehaviour
         pointer.GetComponent<Transform>().position = pos;
     }
 
-
+    public void PlayerDeath()
+    {
+        Debug.Log("plyaer dead");
+    }
 
 }

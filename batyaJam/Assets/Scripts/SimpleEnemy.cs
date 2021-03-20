@@ -14,6 +14,7 @@ public class SimpleEnemy : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private float moveMaxForce;
     [SerializeField] private LayerMask playerLayer;
+    private float colRadius;
 
     private const float INACTIVE = 0;
     private const float PLAYER_IN_AREA = 1;
@@ -24,7 +25,7 @@ public class SimpleEnemy : MonoBehaviour
     private float nextAttackTime;
     private float distanceMagnitude;
     private Vector3 direction;
-    private float colRadius;
+
 
 
     private void Awake()
@@ -65,12 +66,12 @@ public class SimpleEnemy : MonoBehaviour
                         currentState = PLAYER_IN_AREA;
                 }
                 //attack logic here
-                if(Time.time > nextAttackTime)
+                if (Time.time > nextAttackTime)
                 {
                     timeBetweeenAttacks = Random.Range(minTimeBetweenAttacks, maxTimeBetweenAttacks);
                     nextAttackTime += timeBetweeenAttacks;
                     Debug.Log(timeBetweeenAttacks);
-                    if(rb.velocity.magnitude <= 0)
+                    if (rb.velocity.magnitude <= 0)
                     {
                         MoveEnemy(distanceMagnitude);
                     }
@@ -82,6 +83,15 @@ public class SimpleEnemy : MonoBehaviour
         }
     }
 
+
+    //private void CheckifPlayerIsNear()
+    //{
+    //    Collider[] hitColliders = Physics.OverlapSphere(transf.position, colRadius, playerLayer);
+    //    if(hitColliders.Length >0)
+    //    {
+    //        currentState = PLAYER_IN_AREA;
+    //    }
+    //}
     private void OnTriggerEnter(Collider other)
     {
         if (other.name == "Player")
@@ -95,26 +105,34 @@ public class SimpleEnemy : MonoBehaviour
 
     private void MoveEnemy(float magnitude)
     {
-        var percent = ((magnitude - 0.5f)/colRadius) * 100;
+        var percent = ((magnitude - 0.5f) / colRadius) * 100;
         var currentForce = 0f;
-        if(percent > 60 )
+        //поправить силу удара
+        if (percent > 60)
         {
             currentForce = moveMaxForce * 0.3f;
         }
-        else if(percent<= 60 && percent > 30)
+        else if (percent <= 60)
         {
             currentForce = moveMaxForce * 0.5f;
         }
-        else if(percent <= 30)
-        {
-            currentForce = moveMaxForce * 0.5f;
-        }
-        //проверка либо на состояние, либо на то, есть поинтер или нет
+
         direction = new Vector3(player.position.x - transf.position.x, 0f, player.position.z - transf.position.z).normalized;
         rb.AddForce(direction * currentForce, ForceMode.Impulse);
-        direction = Vector3.zero;   
+        direction = Vector3.zero;
     }
 
+    public void Death()
+    {
+        //перепилить
+        Destroy(gameObject);
+    }
 
+    //private void OnDrawGizmos()
+    //{
+    //    if (transf == null)
+    //        return;
+    //    Gizmos.DrawWireSphere(transf.position, 3f);
+    //}
 
 }
