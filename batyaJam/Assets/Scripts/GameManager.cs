@@ -35,9 +35,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if(player.rb.velocity.magnitude > 0)
+        {
+            currentState = CHARACTER_MOVING;
+            pointer.SetActive(false);
+            pointer_set.SetActive(false);
+        }
+
         switch(currentState)
         {
             case CHOOSE_POINT:
+                player.hascontrol = false;
                 RaycastHit rayHit;
                 if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out rayHit, Mathf.Infinity, groundLayer))
                 {
@@ -58,16 +66,23 @@ public class GameManager : MonoBehaviour
                 
                 break;
             case POINT_SET:
-                if(player.rb.velocity.magnitude > 0)
+                player.hascontrol = true;
+                if (player.rb.velocity.magnitude > 0)
                 {
                     pointer_set.SetActive(false);
                     currentState = CHARACTER_MOVING;
                 }
                 break;
             case CHARACTER_MOVING:
-
+                player.hascontrol = false;
+                if (player.rb.velocity.magnitude <= 0)
+                {
+                    currentState = CHOOSE_POINT;
+                }
                 break;
             case WAIT:
+                //заглушка на случай
+
                 break;
         }
         

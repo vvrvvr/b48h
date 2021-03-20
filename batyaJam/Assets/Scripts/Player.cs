@@ -25,27 +25,30 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        //кнопка держи
-        if (Input.GetKey(KeyCode.Space))
+        if (hascontrol)
         {
-            if (moveCurrentForce < MoveMaxForce)
+            //кнопка держи
+            if (Input.GetKey(KeyCode.Space))
             {
-                moveCurrentForce += forceStep;
+                if (moveCurrentForce < MoveMaxForce)
+                {
+                    moveCurrentForce += forceStep;
+                }
+                else
+                    moveCurrentForce = MoveMaxForce;
+                powerSlider.Setpower(moveCurrentForce);
             }
-            else
-                moveCurrentForce = MoveMaxForce;
-            powerSlider.Setpower(moveCurrentForce);
-        }
-        //кнопка отпустил и понеслась
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            //проверка либо на состояние, либо на то, есть поинтер или нет
-            var pointer = gameManager.pointer_set.GetComponent<Transform>();
-            direction = new Vector3(pointer.position.x - transform.position.x, 0f, pointer.position.z - transform.position.z).normalized;
-            rb.AddForce(direction * moveCurrentForce, ForceMode.Impulse);
-            direction = Vector3.zero;
-            moveCurrentForce = 0;
-            powerSlider.Setpower(0f);
+            //кнопка отпустил и понеслась
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                //проверка либо на состояние, либо на то, есть поинтер или нет
+                var pointer = gameManager.pointer_set.GetComponent<Transform>();
+                direction = new Vector3(pointer.position.x - transform.position.x, 0f, pointer.position.z - transform.position.z).normalized;
+                rb.AddForce(direction * moveCurrentForce, ForceMode.Impulse);
+                direction = Vector3.zero;
+                moveCurrentForce = 0;
+                powerSlider.Setpower(0f);
+            }
         }
     }
 
