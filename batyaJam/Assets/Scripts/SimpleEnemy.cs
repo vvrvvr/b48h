@@ -23,6 +23,7 @@ public class SimpleEnemy : MonoBehaviour
     private const float PLAYER_VISIBLE = 2;
     private const float ENEMY_MOVING = 3;
     private float currentState;
+    private bool skipFirstAttack;
 
     private float nextAttackTime;
     private float distanceMagnitude;
@@ -37,10 +38,13 @@ public class SimpleEnemy : MonoBehaviour
         nextAttackTime = 0f;
         direction = Vector3.zero;
         colRadius = sphereCol.radius;
+        skipFirstAttack = true;
     }
 
     private void Update()
     {
+        if (GameManager.Singleton.EndGame)
+            return;
         if(player == null)
         {
             currentState = INACTIVE;
@@ -58,6 +62,7 @@ public class SimpleEnemy : MonoBehaviour
                 {
                     Debug.DrawRay(transf.position, player.position - transf.position, Color.yellow);
                     if (hit.collider.name == "Player")
+                        skipFirstAttack = true;
                         currentState = PLAYER_VISIBLE;
                     //Debug.Log($"hit: {hit.collider.name}");
                 }
@@ -74,13 +79,22 @@ public class SimpleEnemy : MonoBehaviour
                 //attack logic here
                 if (Time.time > nextAttackTime)
                 {
-                    timeBetweeenAttacks = Random.Range(minTimeBetweenAttacks, maxTimeBetweenAttacks);
+                    Debug.Log("attack");
+                    
                     nextAttackTime += timeBetweeenAttacks;
+                    timeBetweeenAttacks = Random.Range(minTimeBetweenAttacks, maxTimeBetweenAttacks);
+                    if (skipFirstAttack)
+                        nextAttackTime = Time.time + timeBetweeenAttacks;
                     //Debug.Log(timeBetweeenAttacks);
-                    if (rb.velocity.magnitude <= 0)
+                    if (!skipFirstAttack)
                     {
-                        MoveEnemy(distanceMagnitude);
+                        
+                        if (rb.velocity.magnitude <= 0)
+                        {
+                            MoveEnemy(distanceMagnitude);
+                        }
                     }
+                    skipFirstAttack = false;
                 }
                 break;
             case ENEMY_MOVING:
@@ -102,7 +116,7 @@ public class SimpleEnemy : MonoBehaviour
         {
             currentForce = moveMaxForce * 0.5f;
         }
-
+        Debug.Log(currentForce);
         direction = new Vector3(player.position.x - transf.position.x, 0f, player.position.z - transf.position.z).normalized;
         rb.AddForce(direction * currentForce, ForceMode.Impulse);
         direction = Vector3.zero;

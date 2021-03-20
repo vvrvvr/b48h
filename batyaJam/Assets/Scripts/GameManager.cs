@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private const float CHARACTER_MOVING = 2;
     private const float WAIT = 3;
     private float currentState;
+    [HideInInspector] public bool EndGame;
 
 
 
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
         pointer.SetActive(false);
         pointer_set.SetActive(false);
         currentState = CHOOSE_POINT;
+        EndGame = false;
     }
 
     private void Update()
@@ -104,4 +106,18 @@ public class GameManager : MonoBehaviour
         player.Death();
     }
 
+    public void Endgame()
+    {
+       
+        player.hascontrol = false;
+        player.rb.velocity = Vector3.zero;
+        pointer.SetActive(false);
+        pointer_set.SetActive(false);
+        player.directionArrow.SetActive(false);
+        currentState = WAIT;
+        EndGame = true;
+        player = null;
+    }
+
+   
 }

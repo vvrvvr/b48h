@@ -9,6 +9,7 @@ public class DeathTrigger : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             GameManager.Singleton.PlayerDeath();
+            UIManager.Singleton.LoseGame();
         }
         else if(other.CompareTag("Enemy"))
         {
