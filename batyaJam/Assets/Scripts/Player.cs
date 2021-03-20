@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform pointer;
     [SerializeField] PowerSlider powerSlider;
     [SerializeField] public float MoveMaxForce;
-    private float moveCurrentForce;
     [SerializeField] private float forceStep;
-    private Rigidbody rb;
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public bool hascontrol;
+
+    private float moveCurrentForce;
     private Vector3 direction;
+    private GameManager gameManager;
 
     void Awake()
     {
         direction = Vector3.zero;
+        gameManager = GameManager.Singleton;
         rb = GetComponent<Rigidbody>();
         powerSlider.SetMaxPower(MoveMaxForce);
         moveCurrentForce = 0;
@@ -22,13 +25,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-       //if(Input.GetKeyDown(KeyCode.Space))
-       // {
-       //     direction = new Vector3( pointer.position.x - transform.position.x, 0f, pointer.position.z - transform.position.z).normalized;
-       // }
-
-        //кнопка нажал
-
         //кнопка держи
         if (Input.GetKey(KeyCode.Space))
         {
@@ -43,13 +39,14 @@ public class Player : MonoBehaviour
         //кнопка отпустил и понеслась
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            //проверка либо на состояние, либо на то, есть поинтер или нет
+            var pointer = gameManager.pointer_set.GetComponent<Transform>();
             direction = new Vector3(pointer.position.x - transform.position.x, 0f, pointer.position.z - transform.position.z).normalized;
             rb.AddForce(direction * moveCurrentForce, ForceMode.Impulse);
             direction = Vector3.zero;
             moveCurrentForce = 0;
             powerSlider.Setpower(0f);
         }
-
     }
 
     //private void MoveCharacter()
