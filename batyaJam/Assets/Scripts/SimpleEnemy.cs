@@ -6,9 +6,13 @@ public class SimpleEnemy : MonoBehaviour
 {
     private Transform transf;
     private Rigidbody rb;
-    [SerializeField] private float timeBetweeenAttacks;
+
+    private float timeBetweeenAttacks;
+    [SerializeField] private float minTimeBetweenAttacks;
+    [SerializeField] private float maxTimeBetweenAttacks;
+
     [SerializeField] private Transform player;
-    [SerializeField] private float moveForce;
+    [SerializeField] private float moveMaxForce;
     [SerializeField] private LayerMask playerLayer;
 
     private const float INACTIVE = 0;
@@ -20,6 +24,7 @@ public class SimpleEnemy : MonoBehaviour
     private float nextAttackTime;
     private float distanceMagnitude;
     private Vector3 direction;
+    private float colRadius;
 
 
     private void Awake()
@@ -28,6 +33,7 @@ public class SimpleEnemy : MonoBehaviour
         transf = GetComponent<Transform>();
         nextAttackTime = 0f;
         direction = Vector3.zero;
+        colRadius = GetComponent<SphereCollider>().radius;
     }
 
     private void Update()
@@ -61,8 +67,9 @@ public class SimpleEnemy : MonoBehaviour
                 //attack logic here
                 if(Time.time > nextAttackTime)
                 {
+                    timeBetweeenAttacks = Random.Range(minTimeBetweenAttacks, maxTimeBetweenAttacks);
                     nextAttackTime += timeBetweeenAttacks;
-                    Debug.Log("attack");
+                    Debug.Log(timeBetweeenAttacks);
                     if(rb.velocity.magnitude <= 0)
                     {
                         MoveEnemy(distanceMagnitude);
@@ -88,10 +95,23 @@ public class SimpleEnemy : MonoBehaviour
 
     private void MoveEnemy(float magnitude)
     {
-        Debug.Log(magnitude - 0.5f);
+        var percent = ((magnitude - 0.5f)/colRadius) * 100;
+        var currentForce = 0f;
+        if(percent > 60 )
+        {
+            currentForce = moveMaxForce * 0.3f;
+        }
+        else if(percent<= 60 && percent > 30)
+        {
+            currentForce = moveMaxForce * 0.5f;
+        }
+        else if(percent <= 30)
+        {
+            currentForce = moveMaxForce * 0.5f;
+        }
         //проверка либо на состояние, либо на то, есть поинтер или нет
         direction = new Vector3(player.position.x - transf.position.x, 0f, player.position.z - transf.position.z).normalized;
-        rb.AddForce(direction * moveForce, ForceMode.Impulse);
+        rb.AddForce(direction * currentForce, ForceMode.Impulse);
         direction = Vector3.zero;   
     }
 

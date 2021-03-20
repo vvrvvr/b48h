@@ -1775,9 +1775,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532999adde95b4d4eb04326180f9aaa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweeenAttacks: 1
+  minTimeBetweenAttacks: 1.4
+  maxTimeBetweenAttacks: 2.5
   player: {fileID: 1145965149}
-  moveForce: 5
+  moveMaxForce: 10
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
