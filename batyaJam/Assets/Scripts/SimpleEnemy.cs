@@ -62,7 +62,7 @@ public class SimpleEnemy : MonoBehaviour
                 {
                     Debug.DrawRay(transf.position, player.position - transf.position, Color.yellow);
                     if (hit.collider.name == "Player")
-                        skipFirstAttack = true;
+                        //skipFirstAttack = true;
                         currentState = PLAYER_VISIBLE;
                     //Debug.Log($"hit: {hit.collider.name}");
                 }
