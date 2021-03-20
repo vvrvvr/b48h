@@ -15,6 +15,7 @@ public class SimpleEnemy : MonoBehaviour
     [SerializeField] private float moveMaxForce;
     [SerializeField] private SphereCollider sphereCol;
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private ParticleSystem particle;
     private float colRadius;
 
     private const float INACTIVE = 0;
@@ -40,6 +41,10 @@ public class SimpleEnemy : MonoBehaviour
 
     private void Update()
     {
+        if(player == null)
+        {
+            currentState = INACTIVE;
+        }
        // Debug.Log(currentState);
         switch (currentState)
         {
@@ -113,7 +118,7 @@ public class SimpleEnemy : MonoBehaviour
     }
     public void Death()
     {
-        //перепилить
+        Instantiate(particle, transf.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

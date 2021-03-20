@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float forceStep;
     [SerializeField] public GameObject directionArrow;
     [SerializeField] private Transform directionArrowTransform;
-    [SerializeField] private GameObject lookat;
+    [SerializeField] private ParticleSystem particle;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public bool hascontrol;
     
@@ -83,5 +83,11 @@ public class Player : MonoBehaviour
     {
         var lookPos = new Vector3(pointToLook.position.x, transf.position.y, pointToLook.position.z);
         directionArrowTransform.LookAt(lookPos);
+    }
+
+    public void Death()
+    {
+        Instantiate(particle, transf.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

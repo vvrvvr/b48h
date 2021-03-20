@@ -35,59 +35,62 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(player.rb.velocity.magnitude > 0)
+        if (player != null)
         {
-            currentState = CHARACTER_MOVING;
-            pointer.SetActive(false);
-            pointer_set.SetActive(false);
-        }
-        switch(currentState)
-        {
-            case CHOOSE_POINT:
-                player.hascontrol = false;
-                
-                RaycastHit rayHit;
-                if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out rayHit, Mathf.Infinity, groundLayer))
-                {
-                    pointer.SetActive(true);
-                    player.directionArrow.SetActive(true);
-                    MovePointer(rayHit.point);
-                    player.SetArrowDirection(pointer.GetComponent<Transform>());
-                    if (Input.GetMouseButton(0))
+            if (player.rb.velocity.magnitude > 0)
+            {
+                currentState = CHARACTER_MOVING;
+                pointer.SetActive(false);
+                pointer_set.SetActive(false);
+            }
+            switch (currentState)
+            {
+                case CHOOSE_POINT:
+                    player.hascontrol = false;
+
+                    RaycastHit rayHit;
+                    if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out rayHit, Mathf.Infinity, groundLayer))
+                    {
+                        pointer.SetActive(true);
+                        player.directionArrow.SetActive(true);
+                        MovePointer(rayHit.point);
+                        player.SetArrowDirection(pointer.GetComponent<Transform>());
+                        if (Input.GetMouseButton(0))
+                        {
+                            pointer.SetActive(false);
+                            pointer_set.SetActive(true);
+                            pointer_set.GetComponent<Transform>().position = rayHit.point;
+                            currentState = POINT_SET;
+                        }
+                    }
+                    else
                     {
                         pointer.SetActive(false);
-                        pointer_set.SetActive(true);
-                        pointer_set.GetComponent<Transform>().position = rayHit.point;
-                        currentState = POINT_SET;
+                        player.directionArrow.SetActive(false);
                     }
-                }
-                else
-                {
-                    pointer.SetActive(false);
-                    player.directionArrow.SetActive(false);
-                }
-                
-                break;
-            case POINT_SET:
-                player.hascontrol = true;
-                if (player.rb.velocity.magnitude > 0)
-                {
-                    pointer_set.SetActive(false);
-                    currentState = CHARACTER_MOVING;
-                }
-                break;
-            case CHARACTER_MOVING:
-                player.directionArrow.SetActive(false);
-                player.hascontrol = false;
-                if (player.rb.velocity.magnitude <= 0)
-                {
-                    currentState = CHOOSE_POINT;
-                }
-                break;
-            case WAIT:
-                //заглушка на случай
 
-                break;
+                    break;
+                case POINT_SET:
+                    player.hascontrol = true;
+                    if (player.rb.velocity.magnitude > 0)
+                    {
+                        pointer_set.SetActive(false);
+                        currentState = CHARACTER_MOVING;
+                    }
+                    break;
+                case CHARACTER_MOVING:
+                    player.directionArrow.SetActive(false);
+                    player.hascontrol = false;
+                    if (player.rb.velocity.magnitude <= 0)
+                    {
+                        currentState = CHOOSE_POINT;
+                    }
+                    break;
+                case WAIT:
+                    //заглушка на случай
+
+                    break;
+            }
         }
     }
 
@@ -98,7 +101,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDeath()
     {
-        Debug.Log("plyaer dead");
+        player.Death();
     }
 
 }
