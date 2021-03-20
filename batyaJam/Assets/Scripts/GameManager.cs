@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject pointer;
+    [SerializeField] public GameObject pointer;
     [SerializeField] public GameObject pointer_set;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] private Player player;
@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     private const float POINT_SET = 1;
     private const float CHARACTER_MOVING = 2;
     private const float WAIT = 3;
-
     private float currentState;
+
 
 
     private void Awake()
@@ -41,16 +41,18 @@ public class GameManager : MonoBehaviour
             pointer.SetActive(false);
             pointer_set.SetActive(false);
         }
-
         switch(currentState)
         {
             case CHOOSE_POINT:
                 player.hascontrol = false;
+                
                 RaycastHit rayHit;
                 if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out rayHit, Mathf.Infinity, groundLayer))
                 {
                     pointer.SetActive(true);
+                    player.directionArrow.SetActive(true);
                     MovePointer(rayHit.point);
+                    player.SetArrowDirection(pointer.GetComponent<Transform>());
                     if (Input.GetMouseButton(0))
                     {
                         pointer.SetActive(false);
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     pointer.SetActive(false);
+                    player.directionArrow.SetActive(false);
                 }
                 
                 break;
@@ -74,6 +77,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case CHARACTER_MOVING:
+                player.directionArrow.SetActive(false);
                 player.hascontrol = false;
                 if (player.rb.velocity.magnitude <= 0)
                 {

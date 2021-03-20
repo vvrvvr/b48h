@@ -7,20 +7,26 @@ public class Player : MonoBehaviour
     [SerializeField] PowerSlider powerSlider;
     [SerializeField] public float MoveMaxForce;
     [SerializeField] private float forceStep;
+    [SerializeField] public GameObject directionArrow;
+    [SerializeField] private Transform directionArrowTransform;
+    [SerializeField] private GameObject lookat;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public bool hascontrol;
 
     private float moveCurrentForce;
     private Vector3 direction;
     private GameManager gameManager;
+    private Transform transf;
 
     void Awake()
     {
+        //directionArrow.SetActive(false);
         direction = Vector3.zero;
         gameManager = GameManager.Singleton;
         rb = GetComponent<Rigidbody>();
         powerSlider.SetMaxPower(MoveMaxForce);
         moveCurrentForce = 0;
+        transf = GetComponent<Transform>();
     }
 
     void Update()
@@ -52,15 +58,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    //private void MoveCharacter()
-    //{
-    //    rb.AddForce(direction * MoveMaxForce, ForceMode.Impulse);
-    //    direction = Vector3.zero;
-    //}
-
-    //private void FixedUpdate()
-    //{
-    //    MoveCharacter();
-    //}
-
+    public void SetArrowDirection(Transform pointToLook)
+    {
+        var lookPos = new Vector3(pointToLook.position.x, transf.position.y, pointToLook.position.z);
+        directionArrowTransform.LookAt(lookPos);
+    }
 }
