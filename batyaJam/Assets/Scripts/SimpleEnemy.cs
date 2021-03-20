@@ -13,6 +13,7 @@ public class SimpleEnemy : MonoBehaviour
 
     [SerializeField] private Transform player;
     [SerializeField] private float moveMaxForce;
+    [SerializeField] private SphereCollider sphereCol;
     [SerializeField] private LayerMask playerLayer;
     private float colRadius;
 
@@ -34,12 +35,12 @@ public class SimpleEnemy : MonoBehaviour
         transf = GetComponent<Transform>();
         nextAttackTime = 0f;
         direction = Vector3.zero;
-        colRadius = GetComponent<SphereCollider>().radius;
+        colRadius = sphereCol.radius;
     }
 
     private void Update()
     {
-        //Debug.Log(currentState);
+        Debug.Log(currentState);
         switch (currentState)
         {
             case INACTIVE:
@@ -83,25 +84,16 @@ public class SimpleEnemy : MonoBehaviour
         }
     }
 
-
-    //private void CheckifPlayerIsNear()
+    //private void OnTriggerEnter(Collider other)
     //{
-    //    Collider[] hitColliders = Physics.OverlapSphere(transf.position, colRadius, playerLayer);
-    //    if(hitColliders.Length >0)
-    //    {
+    //    if (other.name == "Player")
     //        currentState = PLAYER_IN_AREA;
-    //    }
     //}
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.name == "Player")
-            currentState = PLAYER_IN_AREA;
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.name == "Player")
-            currentState = INACTIVE;
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.name == "Player")
+    //        currentState = INACTIVE;
+    //}
 
     private void MoveEnemy(float magnitude)
     {
@@ -122,17 +114,20 @@ public class SimpleEnemy : MonoBehaviour
         direction = Vector3.zero;
     }
 
+    public void SetPlayerInArea()
+    {
+        currentState = PLAYER_IN_AREA;
+    }
+    public void SetInactive()
+    {
+        currentState = INACTIVE;
+    }
     public void Death()
     {
         //перепилить
         Destroy(gameObject);
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (transf == null)
-    //        return;
-    //    Gizmos.DrawWireSphere(transf.position, 3f);
-    //}
+
 
 }
