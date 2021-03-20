@@ -968,7 +968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerSlider: {fileID: 1485673033}
   MoveMaxForce: 15
-  forceStep: 0.1
+  forceStep: 10
   directionArrow: {fileID: 2022986162}
   directionArrowTransform: {fileID: 2022986163}
   lookat: {fileID: 0}
@@ -2112,10 +2112,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1092854947919392697, guid: f6f23f2b6ef396944b1f609e0c44258e, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2770320874594910324, guid: f6f23f2b6ef396944b1f609e0c44258e, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -2163,10 +2159,6 @@ PrefabInstance:
     - target: {fileID: 4653264965242277715, guid: f6f23f2b6ef396944b1f609e0c44258e, type: 3}
       propertyPath: m_Name
       value: Death trigger Sphere
-      objectReference: {fileID: 0}
-    - target: {fileID: 5984234339821445292, guid: f6f23f2b6ef396944b1f609e0c44258e, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6f23f2b6ef396944b1f609e0c44258e, type: 3}

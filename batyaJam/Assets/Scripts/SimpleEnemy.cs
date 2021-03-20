@@ -40,7 +40,7 @@ public class SimpleEnemy : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(currentState);
+       // Debug.Log(currentState);
         switch (currentState)
         {
             case INACTIVE:
@@ -71,7 +71,7 @@ public class SimpleEnemy : MonoBehaviour
                 {
                     timeBetweeenAttacks = Random.Range(minTimeBetweenAttacks, maxTimeBetweenAttacks);
                     nextAttackTime += timeBetweeenAttacks;
-                    Debug.Log(timeBetweeenAttacks);
+                    //Debug.Log(timeBetweeenAttacks);
                     if (rb.velocity.magnitude <= 0)
                     {
                         MoveEnemy(distanceMagnitude);
@@ -83,17 +83,6 @@ public class SimpleEnemy : MonoBehaviour
                 break;
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.name == "Player")
-    //        currentState = PLAYER_IN_AREA;
-    //}
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.name == "Player")
-    //        currentState = INACTIVE;
-    //}
 
     private void MoveEnemy(float magnitude)
     {

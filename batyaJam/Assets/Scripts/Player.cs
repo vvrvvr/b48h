@@ -12,11 +12,13 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject lookat;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public bool hascontrol;
+    
 
     private float moveCurrentForce;
     private Vector3 direction;
     private GameManager gameManager;
     private Transform transf;
+    private bool increasePowerValue;
 
     void Awake()
     {
@@ -36,17 +38,36 @@ public class Player : MonoBehaviour
             //кнопка держи
             if (Input.GetKey(KeyCode.Space))
             {
-                if (moveCurrentForce < MoveMaxForce)
+                if (increasePowerValue)
                 {
-                    moveCurrentForce += forceStep;
+                    if (moveCurrentForce < MoveMaxForce)
+                    {
+                        moveCurrentForce += forceStep * Time.deltaTime;
+                    }
+                    else
+                    {
+                        moveCurrentForce = MoveMaxForce;
+                        increasePowerValue = false;
+                    }
                 }
-                else
-                    moveCurrentForce = MoveMaxForce;
+                else if(!increasePowerValue)
+                {
+                    if (moveCurrentForce > 0 )
+                    {
+                        moveCurrentForce -= forceStep * Time.deltaTime;
+                    }
+                    else
+                    {
+                        moveCurrentForce = 0;
+                        increasePowerValue = true;
+                    }
+                }
                 powerSlider.Setpower(moveCurrentForce);
             }
             //кнопка отпустил и понеслась
             if (Input.GetKeyUp(KeyCode.Space))
             {
+                increasePowerValue = true;
                 //проверка либо на состояние, либо на то, есть поинтер или нет
                 var pointer = gameManager.pointer_set.GetComponent<Transform>();
                 direction = new Vector3(pointer.position.x - transform.position.x, 0f, pointer.position.z - transform.position.z).normalized;

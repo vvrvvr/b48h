@@ -89,7 +89,6 @@ public class GameManager : MonoBehaviour
 
                 break;
         }
-        
     }
 
     public void MovePointer(Vector3 pos)
