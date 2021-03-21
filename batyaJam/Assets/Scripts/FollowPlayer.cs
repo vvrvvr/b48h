@@ -9,10 +9,10 @@ public class FollowPlayer : MonoBehaviour
 
     private void Awake()
     {
-        if (player != null)
-        {
-            transform.position = player.position + offset;
-        }
+        //if (player != null)
+        //{
+        //    transform.position = player.position + offset;
+        //}
     }
 
     void FixedUpdate()
