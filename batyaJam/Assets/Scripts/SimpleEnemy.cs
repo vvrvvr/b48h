@@ -79,7 +79,7 @@ public class SimpleEnemy : MonoBehaviour
                 //attack logic here
                 if (Time.time > nextAttackTime)
                 {
-                    Debug.Log("attack");
+                    //Debug.Log("attack");
                     
                     nextAttackTime += timeBetweeenAttacks;
                     timeBetweeenAttacks = Random.Range(minTimeBetweenAttacks, maxTimeBetweenAttacks);
@@ -116,7 +116,7 @@ public class SimpleEnemy : MonoBehaviour
         {
             currentForce = moveMaxForce * 0.5f;
         }
-        Debug.Log(currentForce);
+        //Debug.Log(currentForce);
         direction = new Vector3(player.position.x - transf.position.x, 0f, player.position.z - transf.position.z).normalized;
         rb.AddForce(direction * currentForce, ForceMode.Impulse);
         direction = Vector3.zero;

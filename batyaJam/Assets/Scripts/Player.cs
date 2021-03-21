@@ -12,6 +12,11 @@ public class Player : MonoBehaviour
     [SerializeField] private ParticleSystem particle;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public bool hascontrol;
+
+    //sounds
+    [SerializeField] AudioClip moveSound;
+    private AudioSource aud;
+
     
 
     private float moveCurrentForce;
@@ -29,6 +34,7 @@ public class Player : MonoBehaviour
         powerSlider.SetMaxPower(MoveMaxForce);
         moveCurrentForce = 0;
         transf = GetComponent<Transform>();
+        aud = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -75,6 +81,8 @@ public class Player : MonoBehaviour
                 direction = Vector3.zero;
                 moveCurrentForce = 0;
                 powerSlider.Setpower(0f);
+                aud.Play();
+                
             }
         }
     }
